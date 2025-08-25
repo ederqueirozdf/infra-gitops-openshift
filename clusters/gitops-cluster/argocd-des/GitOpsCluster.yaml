@@ -1,0 +1,24 @@
+# Creates a gitopscluster resource
+#
+# Requires:
+#  Argo CD be installed in the project "argocd
+#  Placement resource "all-openshift-clusters" exists
+#  A clusterSet is bound to the openshift-gitops namespace 
+---
+apiVersion: apps.open-cluster-management.io/v1beta1
+kind: GitOpsCluster
+metadata:
+  name: argo-ocm-importer
+  namespace: argocd-des
+spec:
+  createBlankClusterSecrets: true
+  createPolicyTemplate: true
+  managedServiceAccountRef: "msa"
+  argoServer:
+    cluster: notused
+    argoNamespace: argocd
+  placementRef:
+    kind: Placement
+    apiVersion: cluster.open-cluster-management.io/v1beta1
+    name: global
+    namespace: argocd-des
