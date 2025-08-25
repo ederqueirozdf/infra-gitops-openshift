@@ -1,0 +1,50 @@
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: {{ .Values.project.name }}
+  namespace: {{ .Values.argocd.namespace }}
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  description: "{{ .Values.project.description | default "Projects apps cluster" }}"
+  sourceRepos:
+    {{- range .Values.project.sourceRepos }}
+    - "{{ . }}"
+    {{- end }}
+  destinations:
+    {{- range .Values.project.destinations }}
+    - namespace: "{{ .namespace }}"
+      server: "{{ .server }}"
+    {{- end }}
+  clusterResourceWhitelist:
+    {{- range .Values.project.clusterResourceWhitelist }}
+    - group: "{{ .group }}"
+      kind: "{{ .kind }}"
+    {{- end }}
+  namespaceResourceBlacklist:
+    {{- range .Values.project.namespaceResourceBlacklist }}
+    - group: "{{ .group }}"
+      kind: "{{ .kind }}"
+    {{- end }}
+  namespaceResourceWhitelist:
+    {{- range .Values.project.namespaceResourceWhitelist }}
+    - group: "{{ .group }}"
+      kind: "{{ .kind }}"
+    {{- end }}
+  roles:
+    {{- range .Values.project.roles }}
+    - name: "{{ .name }}"
+      description: "{{ .description | default "No description provided" }}"
+      policies:
+        {{- range .policies }}
+        - "{{ . }}"
+        {{- end }}
+      groups:
+        {{- range .groups }}
+        - "{{ . }}"
+        {{- end }}
+      jwtTokens:
+        {{- range .jwtTokens }}
+        - iat: {{ .iat }}
+        {{- end }}
+    {{- end }}

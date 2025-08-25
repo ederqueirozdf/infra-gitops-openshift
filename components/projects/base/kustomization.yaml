@@ -1,0 +1,7 @@
+kind: Kustomization
+apiVersion: kustomize.config.k8s.io/v1beta1
+
+resources:
+  - crb-self-provisioners.yaml
+  - project-request-template.yaml
+  - project-template.yaml

@@ -1,0 +1,51 @@
+apiVersion: machine.openshift.io/v1beta1
+kind: MachineSet
+metadata:
+  labels:
+    machine.openshift.io/cluster-api-cluster: $CLUSTERID
+  name: $CLUSTERID-infra
+  namespace: openshift-machine-api
+spec:
+  replicas: $MSET_REPLICAS
+  selector:
+    matchLabels:
+      machine.openshift.io/cluster-api-cluster: $CLUSTERID
+      machine.openshift.io/cluster-api-machineset: $CLUSTERID-infra
+  template:
+    metadata:
+      labels:
+        machine.openshift.io/cluster-api-cluster: $CLUSTERID
+        machine.openshift.io/cluster-api-machine-role: infra
+        machine.openshift.io/cluster-api-machine-type: infra
+        machine.openshift.io/cluster-api-machineset: $CLUSTERID-infra
+    spec:
+      metadata:
+        labels:
+          node-role.kubernetes.io/infra: ""
+          node.type/servico: infra
+      taints:
+      - key: node-role.kubernetes.io/infra
+        effect: NoSchedule
+      providerSpec:
+        value:
+          apiVersion: vsphereprovider.openshift.io/v1beta1
+          credentialsSecret:
+            name: vsphere-cloud-credentials
+          diskGiB: $MSET_DISK
+          kind: VSphereMachineProviderSpec
+          memoryMiB: $MSET_MEMORY
+          network:
+            devices:
+            - networkName: PRD_OpenShift
+          numCPUs: $MSET_CPUS
+          numCoresPerSocket: $MSET_SOCKETS
+          snapshot: ""
+          template: $TEMPLATE_NAME
+          userDataSecret:
+            name: worker-user-data
+          workspace:
+            datacenter: $DATACENTER_NAME
+            datastore: $DATACENTER_DATASTORE_PATH
+            folder: $DATACENTER_FOLDER
+            resourcePool: $DATACENTER_RESOURCEPOOL
+            server: $DATACENTER_SERVER

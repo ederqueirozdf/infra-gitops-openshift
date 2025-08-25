@@ -1,0 +1,49 @@
+argocd: 
+  namespace: openshift-gitops
+
+project:
+  name: hub-cluster-config
+  description: day2 - apps of apps config clusters
+  sourceRepos:
+    - $REPOSITORY
+  destinations:
+    - namespace: openshift-gitops
+      server: https://kubernetes.default.svc
+
+applications:
+
+  - name: oauth
+    repoURL: $REPOSITORY
+    path: clusters/hub-cluster/oauth
+    destinationNamespace: openshift-config
+    destinationServer: https://kubernetes.default.svc
+    syncPolicy:
+      automated:
+        prune: true
+        selfHeal: true
+      syncOptions:
+        - CreateNamespace=true
+        
+  - name: monitoring
+    repoURL: $REPOSITORY
+    path: clusters/hub-cluster/monitoring
+    destinationNamespace: openshift-monitoring
+    destinationServer: https://kubernetes.default.svc
+    syncPolicy:
+      automated:
+        prune: true
+        selfHeal: true
+      syncOptions:
+        - CreateNamespace=true
+
+  - name: machines
+    repoURL: $REPOSITORY
+    path: clusters/hub-cluster/machines
+    destinationNamespace: openshift-machine-api
+    destinationServer: https://kubernetes.default.svc
+    syncPolicy:
+      automated:
+        prune: true
+        selfHeal: true
+      syncOptions:
+        - CreateNamespace=true

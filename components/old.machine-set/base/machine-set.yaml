@@ -1,0 +1,65 @@
+apiVersion: machine.openshift.io/v1beta1
+kind: MachineSet
+metadata:
+  name: bpr1hub01-cmv6d-infra
+  namespace: openshift-machine-api
+  labels:
+    machine.openshift.io/cluster-api-cluster: bpr1hub01-cmv6d
+  annotations:
+    kubectl.kubernetes.io/last-applied-configuration: |
+      {"apiVersion":"machine.openshift.io/v1beta1","kind":"MachineSet","metadata":{"annotations":{},"labels":{"machine.openshift.io/cluster-api-cluster":"bpr1hub01-cmv6d"},"name":"bpr1hub01-cmv6d-infra","namespace":"openshift-machine-api"},"spec":{"replicas":4,"selector":{"matchLabels":{"machine.openshift.io/cluster-api-cluster":"bpr1hub01-cmv6d","machine.openshift.io/cluster-api-machineset":"bpr1hub01-cmv6d-infra"}},"template":{"metadata":{"labels":{"machine.openshift.io/cluster-api-cluster":"bpr1hub01-cmv6d","machine.openshift.io/cluster-api-machine-role":"infra","machine.openshift.io/cluster-api-machine-type":"infra","machine.openshift.io/cluster-api-machineset":"bpr1hub01-cmv6d-infra"}},"spec":{"lifecycleHooks":{},"metadata":{"env":"infra","node-role.kubernetes.io":"infra","node-role.kubernetes.io/infra":""},"providerSpec":{"value":{"apiVersion":"machine.openshift.io/v1beta1","credentialsSecret":{"name":"vsphere-cloud-credentials"},"diskGiB":120,"kind":"VSphereMachineProviderSpec","memoryMiB":16384,"metadata":{"creationTimestamp":null},"network":{"devices":[{"networkName":"PRD_OpenShift"}]},"numCPUs":4,"numCoresPerSocket":2,"snapshot":"","template":"bpr1hub01-cmv6d-rhcos-sao-paulo-generated-zone","userDataSecret":{"name":"worker-user-data"},"workspace":{"datacenter":"DC-SP3","datastore":"/DC-SP3/datastore/vSAN PROD/VxRail-Virtual-SAN-Datastore-ac9d1e92-4629-4e85-91cc-b0c83b7bd837","folder":"/DC-SP3/vm/OpenShift/ocp-acm-cluster","resourcePool":"/DC-SP3/host/BTBTOYOTA-SP3-PRD/Resources","server":"btsp3prdvca01.corp.btb"}}},"taints":[{"effect":"NoSchedule","key":"node-role.kubernetes.io/infra","value":"reserved"},{"effect":"NoExecute","key":"node-role.kubernetes.io/infra","value":"reserved"}]}}}}
+spec:
+  replicas: 6
+  selector:
+    matchLabels:
+      machine.openshift.io/cluster-api-cluster: bpr1hub01-cmv6d
+      machine.openshift.io/cluster-api-machineset: bpr1hub01-cmv6d-infra
+  template:
+    metadata:
+      labels:
+        machine.openshift.io/cluster-api-cluster: bpr1hub01-cmv6d
+        machine.openshift.io/cluster-api-machine-role: infra
+        machine.openshift.io/cluster-api-machine-type: infra
+        machine.openshift.io/cluster-api-machineset: bpr1hub01-cmv6d-infra
+    spec:
+      lifecycleHooks: {}
+      metadata:
+        labels:
+          env: infra
+          node-role.kubernetes.io: infra
+          node-role.kubernetes.io/infra: ""
+      providerSpec:
+        value:
+          apiVersion: machine.openshift.io/v1beta1
+          kind: VSphereMachineProviderSpec
+          template: bpr1hub01-cmv6d-rhcos-sao-paulo-generated-zone
+          credentialsSecret:
+            name: vsphere-cloud-credentials
+          userDataSecret:
+            name: worker-user-data
+          memoryMiB: 16384
+          diskGiB: 120
+          numCPUs: 4
+          numCoresPerSocket: 2
+          snapshot: ""
+          network:
+            devices:
+              - networkName: PRD_OpenShift
+          workspace:
+            datacenter: DC-SP3
+            datastore: /DC-SP3/datastore/vSAN PROD/VxRail-Virtual-SAN-Datastore-ac9d1e92-4629-4e85-91cc-b0c83b7bd837
+            folder: /DC-SP3/vm/OpenShift/ocp-acm-cluster
+            resourcePool: /DC-SP3/host/BTBTOYOTA-SP3-PRD/Resources
+            server: btsp3prdvca01.corp.btb
+          metadata:
+            creationTimestamp: null
+      taints:
+        - key: node-role.kubernetes.io/infra
+          value: reserved
+          effect: PreferNoSchedule
+status:
+  availableReplicas: 6
+  fullyLabeledReplicas: 6
+  observedGeneration: 6
+  readyReplicas: 6
+  replicas: 6

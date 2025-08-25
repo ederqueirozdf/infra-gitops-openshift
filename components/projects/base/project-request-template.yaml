@@ -1,0 +1,8 @@
+apiVersion: config.openshift.io/v1
+kind: Project
+metadata:
+  name: cluster
+spec:
+  projectRequestMessage: Para criar um novo projeto, solicite permissao ao admin do cluster.
+  projectRequestTemplate:
+    name: project-request

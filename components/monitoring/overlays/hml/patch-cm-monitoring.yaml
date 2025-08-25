@@ -1,0 +1,76 @@
+- op: add
+  path: /data/config.yaml
+  value: |
+    enableUserWorkload: true
+    alertmanagerMain: 
+      volumeClaimTemplate:
+        metadata:
+          name: pvc-alertmanager
+        spec:
+          storageClassName: thin-csi
+          resources:
+            requests:
+              storage: 10Gi
+      nodeSelector:
+        node-role.kubernetes.io/infra: ""
+        env: infra
+      tolerations:     
+      - effect: PreferNoSchedule
+        key: node-role.kubernetes.io/infra
+        value: reserved
+    prometheusOperator: 
+      nodeSelector:
+        node-role.kubernetes.io/infra: ""
+        env: infra
+      tolerations:   
+      - effect: PreferNoSchedule
+        key: node-role.kubernetes.io/infra
+        value: reserved
+    prometheusK8s: 
+      volumeClaimTemplate:
+        metadata:
+          name: pvc-prometheus
+        spec:
+          storageClassName: thin-csi
+          resources:
+            requests:
+              storage: 100Gi
+      nodeSelector:
+        node-role.kubernetes.io/infra: ""
+        env: infra
+      tolerations:    
+      - effect: PreferNoSchedule
+        key: node-role.kubernetes.io/infra
+        value: reserved
+    kubeStateMetrics: 
+      nodeSelector:
+        node-role.kubernetes.io/infra: ""
+        env: infra      
+      tolerations:     
+      - effect: PreferNoSchedule
+        key: node-role.kubernetes.io/infra
+        value: reserved
+    openshiftStateMetrics: 
+      nodeSelector:
+        node-role.kubernetes.io/infra: ""
+        env: infra       
+      tolerations:     
+      - effect: PreferNoSchedule
+        key: node-role.kubernetes.io/infra 
+        value: reserved
+    telemeterClient: 
+      nodeSelector:
+        node-role.kubernetes.io/infra: ""
+        env: infra       
+      tolerations:     
+      - effect: PreferNoSchedule
+        key: node-role.kubernetes.io/infra 
+        value: reserved    
+    thanosQuerier:    
+      nodeSelector:
+        node-role.kubernetes.io/infra: ""
+        env: infra       
+      tolerations:     
+      - effect: PreferNoSchedule
+        key: node-role.kubernetes.io/infra
+        value: reserved
