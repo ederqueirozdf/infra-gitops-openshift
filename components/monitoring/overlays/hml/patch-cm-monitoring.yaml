@@ -10,22 +10,20 @@
           storageClassName: thin-csi
           resources:
             requests:
-              storage: 10Gi
+              storage: 100Gi
       nodeSelector:
         node-role.kubernetes.io/infra: ""
-        env: infra
+        node.type/servico: infra
       tolerations:     
-      - effect: PreferNoSchedule
-        key: node-role.kubernetes.io/infra
-        value: reserved
+      - key: node-role.kubernetes.io/infra
+        effect: NoSchedule
     prometheusOperator: 
       nodeSelector:
         node-role.kubernetes.io/infra: ""
-        env: infra
+        node.type/servico: infra
       tolerations:   
-      - effect: PreferNoSchedule
-        key: node-role.kubernetes.io/infra
-        value: reserved
+      - key: node-role.kubernetes.io/infra
+        effect: NoSchedule
     prometheusK8s: 
       volumeClaimTemplate:
         metadata:
@@ -37,40 +35,35 @@
               storage: 100Gi
       nodeSelector:
         node-role.kubernetes.io/infra: ""
-        env: infra
+        node.type/servico: infra
       tolerations:    
-      - effect: PreferNoSchedule
-        key: node-role.kubernetes.io/infra
-        value: reserved
+      - key: node-role.kubernetes.io/infra
+        effect: NoSchedule
     kubeStateMetrics: 
       nodeSelector:
         node-role.kubernetes.io/infra: ""
-        env: infra      
+        node.type/servico: infra      
       tolerations:     
-      - effect: PreferNoSchedule
-        key: node-role.kubernetes.io/infra
-        value: reserved
+      - key: node-role.kubernetes.io/infra
+        effect: NoSchedule
     openshiftStateMetrics: 
       nodeSelector:
         node-role.kubernetes.io/infra: ""
-        env: infra       
+        node.type/servico: infra       
       tolerations:     
-      - effect: PreferNoSchedule
-        key: node-role.kubernetes.io/infra 
-        value: reserved
+      - key: node-role.kubernetes.io/infra
+        effect: NoSchedule
     telemeterClient: 
       nodeSelector:
         node-role.kubernetes.io/infra: ""
-        env: infra       
+        node.type/servico: infra       
       tolerations:     
-      - effect: PreferNoSchedule
-        key: node-role.kubernetes.io/infra 
-        value: reserved    
+      - key: node-role.kubernetes.io/infra
+        effect: NoSchedule
     thanosQuerier:    
       nodeSelector:
         node-role.kubernetes.io/infra: ""
-        env: infra       
+        node.type/servico: infra       
       tolerations:     
-      - effect: PreferNoSchedule
-        key: node-role.kubernetes.io/infra
-        value: reserved
+      - key: node-role.kubernetes.io/infra
+        effect: NoSchedule
