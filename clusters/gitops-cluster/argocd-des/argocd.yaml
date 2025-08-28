@@ -111,11 +111,11 @@ spec:
         cpu: 500m
         memory: 1Gi
   
-  tls:
-    initialCerts: {}
-      # dominio.com.br: |
-      #   -----BEGIN CERTIFICATE-----
-      #   -----END CERTIFICATE-----
+  # tls:
+  #   initialCerts: {}
+  #     # dominio.com.br: |
+  #     #   -----BEGIN CERTIFICATE-----
+  #     #   -----END CERTIFICATE-----
        
   redis:
     resources:
