@@ -20,18 +20,18 @@ spec:
           - list:
               elements:
                 - component: operator
-                  pathTpl: 'components/oadp/operator/overlays/{{metadata.labels.backup}}'
-                  suffix: 'oadp-operator'
+                  suffix: oadp-operator
+                  pathTpl: 'components/oadp/operator/overlays/{{ .metadata.labels.backup }}'
                 - component: instance
-                  pathTpl: 'components/oadp/instance/overlays/{{metadata.labels.env}}'
-                  suffix: 'oadp-instance'
+                  suffix: oadp-instance
+                  pathTpl: 'components/oadp/instance/overlays/{{ .metadata.labels.env }}'
   template:
     metadata:
-      name: '{{name}}-{{.suffix}}'
+      name: '{{ .name }}-{{ .suffix }}'
     spec:
       project: appsets
       destination:
-        server: '{{server}}'
+        server: '{{ .server }}'
         namespace: openshift-adp
       source:
         repoURL: 'https://github.com/ederqueirozdf/infra-gitops-openshift.git'
