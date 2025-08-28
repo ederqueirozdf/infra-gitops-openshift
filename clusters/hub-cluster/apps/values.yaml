@@ -3,9 +3,9 @@ argocd:
 
 project:
   name: hub-cluster-config
-  description: day2 - apps of apps config clusters
+  description: Ete projeto refere-se as applications do argo relacionado ao hub-cluster.
   sourceRepos:
-    - $REPOSITORY
+    - https://github.com/ederqueirozdf/infra-gitops-openshift.git
   destinations:
     - namespace: openshift-gitops
       server: https://kubernetes.default.svc
@@ -13,7 +13,7 @@ project:
 applications:
 
   - name: oauth
-    repoURL: $REPOSITORY
+    repoURL: https://github.com/ederqueirozdf/infra-gitops-openshift.git
     path: clusters/hub-cluster/oauth
     destinationNamespace: openshift-config
     destinationServer: https://kubernetes.default.svc
@@ -24,26 +24,26 @@ applications:
       syncOptions:
         - CreateNamespace=true
         
-  - name: monitoring
-    repoURL: $REPOSITORY
-    path: clusters/hub-cluster/monitoring
-    destinationNamespace: openshift-monitoring
-    destinationServer: https://kubernetes.default.svc
-    syncPolicy:
-      automated:
-        prune: true
-        selfHeal: true
-      syncOptions:
-        - CreateNamespace=true
+  # - name: monitoring
+  #   repoURL: $REPOSITORY
+  #   path: clusters/hub-cluster/monitoring
+  #   destinationNamespace: openshift-monitoring
+  #   destinationServer: https://kubernetes.default.svc
+  #   syncPolicy:
+  #     automated:
+  #       prune: true
+  #       selfHeal: true
+  #     syncOptions:
+  #       - CreateNamespace=true
 
-  - name: machines
-    repoURL: $REPOSITORY
-    path: clusters/hub-cluster/machines
-    destinationNamespace: openshift-machine-api
-    destinationServer: https://kubernetes.default.svc
-    syncPolicy:
-      automated:
-        prune: true
-        selfHeal: true
-      syncOptions:
-        - CreateNamespace=true
+  # - name: machines
+  #   repoURL: $REPOSITORY
+  #   path: clusters/hub-cluster/machines
+  #   destinationNamespace: openshift-machine-api
+  #   destinationServer: https://kubernetes.default.svc
+  #   syncPolicy:
+  #     automated:
+  #       prune: true
+  #       selfHeal: true
+  #     syncOptions:
+  #       - CreateNamespace=true
