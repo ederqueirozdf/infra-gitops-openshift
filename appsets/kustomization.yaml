@@ -4,7 +4,7 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 resources:
 ###appsets - config de apps day2
 #projects / self-provisioner
-  - appset-self-provisioner.yaml
+  # - appset-self-provisioner.yaml
 #oadp / backup
-  - appset-oadp-instance.yaml  
-  - appset-oadp-operator.yaml
+  # - appset-oadp-instance.yaml  
+  # - appset-oadp-operator.yaml
