@@ -49,7 +49,7 @@ applications:
         - CreateNamespace=true
         
   - name: monitoring
-    repoURL: $REPOSITORY
+    repoURL: https://github.com/ederqueirozdf/infra-gitops-openshift.git
     path: clusters/hub-cluster/monitoring
     destinationNamespace: openshift-monitoring
     destinationServer: https://kubernetes.default.svc
