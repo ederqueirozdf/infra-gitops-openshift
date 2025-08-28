@@ -7,3 +7,4 @@ resources:
   - ManagedClusterSetBinding.yaml
   - Placement.yaml
   - argocd.yaml
+  - namespace.yaml
