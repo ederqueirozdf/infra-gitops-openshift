@@ -1,0 +1,41 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: oadp-appset
+  namespace: openshift-gitops
+spec:
+  generators:
+    - clusters:
+        selector:
+          matchExpressions:
+            - key: env
+              operator: In
+              values:
+                - des
+                - hml
+                - prd
+            - key: backup
+              operator: In
+              values:
+                - oadp-1.0
+                - oadp-1.1
+                - oadp-1.2
+  template:
+    metadata:
+      name: '{{name}}-oadp-instance'
+    spec:
+      project: appsets
+      source:
+      - path: '../components/oadp/instance/overlays/{{metadata.labels.env}}'
+        repoURL: 'https://github.com/ederqueirozdf/infra-gitops-openshift.git'
+        targetRevision: HEAD        
+      - path: '../components/oadp/operator/overlays/{{metadata.labels.backup}}'
+        repoURL: 'https://github.com/ederqueirozdf/infra-gitops-openshift.git'
+        targetRevision: HEAD
+      destination:
+        server: '{{server}}'
+        namespace: openshift-adp
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true

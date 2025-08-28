@@ -1,37 +1,31 @@
 apiVersion: argoproj.io/v1alpha1
 kind: ApplicationSet
 metadata:
-  name: oadp-instance-appset
+  name: oauth-htpass-appset
   namespace: openshift-gitops
 spec:
   generators:
     - clusters:
         selector:
           matchExpressions:
+            - key: appset.enable/oauth
+              operator: In
+              values: ["htpass", "ldap"]
             - key: env
               operator: In
-              values:
-                - des
-                - hml
-                - prd
-            - key: backup
-              operator: In
-              values:
-                - oadp-1.0
-                - oadp-1.1
-                - oadp-1.2
+              values: ["prd", "des", "hml"]    
   template:
     metadata:
-      name: '{{name}}-oadp-instance'
+      name: '{{name}}-oauth-htpass'
     spec:
-      project: appsets
+      project: default
       source:
         repoURL: 'https://github.com/ederqueirozdf/infra-gitops-openshift.git'
         targetRevision: HEAD
-        path: '../components/oadp/instance/overlays/{{metadata.labels.env}}'
+        path: '../components/oauth/overlays/{{metadata.labels.oauth}}'
       destination:
         server: '{{server}}'
-        namespace: openshift-adp
+        namespace: openshift-config
       syncPolicy:
         automated:
           prune: true

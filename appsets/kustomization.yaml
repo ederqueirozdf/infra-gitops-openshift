@@ -6,5 +6,6 @@ resources:
 #projects / self-provisioner
   - appset-self-provisioner.yaml
 #oadp / backup
-  - appset-oadp-instance.yaml  
-  - appset-oadp-operator.yaml
+  - appset-oadp.yaml
+#oauth / authentication
+  - appset-oauth.yaml

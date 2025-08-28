@@ -8,21 +8,12 @@ spec:
     - clusters:
         selector:
           matchExpressions:
-            - key: cluster.flavor/type
+            - key: appset.enable/self-provisioner
               operator: In
-              values:
-                - openshift
-                - openshift-virtualization
+              values: ["true"]
             - key: env
               operator: In
-              values:
-                - prd
-                - des
-                - hml  
-            - key: gitops.app/self-provisioner
-              operator: In
-              values:
-                - enable
+              values: ["prd", "des", "hml"]                  
   template:
     metadata:
       name: '{{name}}-self-provisioner'
