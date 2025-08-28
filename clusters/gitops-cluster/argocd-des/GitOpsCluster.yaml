@@ -16,7 +16,7 @@ spec:
   managedServiceAccountRef: "msa"
   argoServer:
     cluster: notused
-    argoNamespace: argocd
+    argoNamespace: argocd-des
   placementRef:
     kind: Placement
     apiVersion: cluster.open-cluster-management.io/v1beta1
