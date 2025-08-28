@@ -1,0 +1,153 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ArgoCD
+metadata:
+  name: argocd-des
+spec:
+  extraConfig:
+    timeout.reconciliation: 10m
+    accounts.nia-acs: apiKey
+    accounts.nia-acs.enabled: "true"
+    # resource.customizations.ignoreDifferences.apps_Deployment: |
+    #   jsonPointers:
+    #   - /spec/template/metadata/annotations/release.k8s.bb~1restartedAt
+    #   - /spec/template/metadata/annotations/pod.k8s.bb~1restartedAt
+    #   - /spec/template/metadata/annotations/kubectl.kubernetes.io~1restartedAt
+  monitoring:
+    enabled: true
+  applicationSet:
+    resources:
+      requests:
+        cpu: 500m
+        memory: 512Mi
+    webhookServer:
+      ingress:
+        enabled: false
+      route:
+        enabled: false
+  applicationInstanceLabelKey: ''
+  server:
+    replicas: 3
+    autoscale:
+      enabled: true
+      hpa: 
+        maxReplicas: 8
+        minReplicas: 3
+        targetCPUUtilizationPercentage: 60
+        scaleTargetRef:
+          apiVersion: apps/v1
+          kind: Deployment
+          name: argocd-des-server
+    resources:
+      limits:
+        memory: 2Gi
+      requests:
+        cpu: 500m
+        memory: 1Gi
+    grpc:
+      ingress:
+        enabled: false
+    ingress:
+      enabled: false
+    route:
+      enabled: true
+      tls:
+        insecureEdgeTerminationPolicy: Redirect
+        termination: passthrough
+    service:
+      type: ""
+  statusBadgeEnabled: true
+  grafana:
+    enabled: false
+    ingress:
+      enabled: false
+    resources:
+      limits:
+        cpu: 500m
+        memory: 256Mi
+      requests:
+        cpu: 250m
+        memory: 128Mi
+    route:
+      enabled: true
+  # initialRepositories: 
+
+  prometheus:
+    enabled: false
+    ingress:
+      enabled: false
+    route:
+      enabled: false
+  initialSSHKnownHosts: {}
+  kustomizeBuildOptions: --load-restrictor LoadRestrictionsNone --enable-helm
+  rbac:
+    defaultPolicy: ''
+    policy: |
+      g, system:cluster-admins, role:admin    
+    scopes: '[groups]'
+  repo:
+    env:
+      - name: ARGOCD_HELM_ALLOW_CONCURRENCY
+        value: "true"
+    replicas: 3
+    resources:
+      limits:
+        memory: 1Gi
+      requests:
+        cpu: 250m
+        memory: 256Mi
+    extraRepoCommandArgs: 
+      - --repo-cache-expiration
+      - 192h
+      - --default-cache-expiration
+      - 192h
+  ha:
+    enabled: true
+    resources:
+      limits:
+        memory: 2Gi
+      requests:
+        cpu: 500m
+        memory: 1Gi
+  
+  tls:
+    initialCerts: {}
+      # dominio.com.br: |
+      #   -----BEGIN CERTIFICATE-----
+      #   -----END CERTIFICATE-----
+       
+  redis:
+    resources:
+      limits:
+        memory: 2Gi
+      requests:
+        cpu: 250m
+        memory: 512Mi
+  controller:
+    env:
+    - name: ARGOCD_APPLICATION_CONTROLLER_SYNC_TIMEOUT
+      value: '300'
+    - name: ARGOCD_RECONCILIATION_JITTER 
+      value: '120s'
+    - name: ARGOCD_APPLICATION_CONTROLLER_SELF_HEAL_TIMEOUT_SECONDS
+      value: '900'
+    - name: ARGOCD_CLUSTER_CACHE_BATCH_EVENTS_PROCESSING
+      value: 'true'
+    - name: ARGOCD_RECONCILIATION_TIMEOUT
+      value: '30m'
+    - name: ARGOCD_APPLICATION_CONTROLLER_REPO_SERVER_TIMEOUT_SECONDS
+      value: '600'
+    - name: ARGO_CD_UPDATE_CLUSTER_INFO_TIMEOUT 
+      value: '1m'
+    appSync: "30m0s"
+    processors:
+      operation: 250
+      status: 500
+    resources:
+      limits:
+        memory: 4Gi
+      requests:
+        cpu: "1"
+        memory: 1Gi
+    sharding:
+      enabled: true
+      replicas: 3
