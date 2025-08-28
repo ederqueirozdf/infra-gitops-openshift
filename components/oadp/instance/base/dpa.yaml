@@ -1,0 +1,41 @@
+apiVersion: oadp.openshift.io/v1alpha1
+kind: DataProtectionApplication
+metadata:
+  name: oadp-backup
+  namespace: openshift-adp
+  annotations:
+    argocd.argoproj.io/sync-wave: "2"   
+spec:
+  backupImages: false
+  backupLocations:
+    - velero:
+        config:
+          profile: default
+          region: default
+          s3ForcePathStyle: "true"
+          s3Url: "https://S3URL"
+        credential:
+          key: cloud
+          name: cloud-credentials
+        default: true
+        objectStorage:
+          bucket: BUCKETNAME
+          prefix: velero-CLUSTERNAME
+        provider: aws
+  configuration:
+    restic:
+      enable: false
+    velero:
+      defaultPlugins:
+        - openshift
+        - aws
+        - kubevirt
+        - csi
+      featureFlags:
+        - EnableCSI
+  snapshotLocations:
+    - velero:
+        config:
+          profile: default
+          region: default
+        provider: aws

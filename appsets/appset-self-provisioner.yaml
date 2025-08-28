@@ -11,12 +11,13 @@ spec:
             - key: cluster.flavor/type
               operator: In
               values:
-                - openshift  
-            - key: cluster/env
+                - openshift
+                - openshift-virtualization
+            - key: env
               operator: In
               values:
                 - prd
-                - dev
+                - des
                 - hml  
             - key: gitops.app/self-provisioner
               operator: In
@@ -30,7 +31,7 @@ spec:
       source:
         repoURL: 'https://github.com/ederqueirozdf/infra-gitops-openshift.git'
         targetRevision: HEAD
-        path: '../components/projects/base'
+        path: '/components/projects/base'
       destination:
         server: '{{server}}'
         namespace: openshift-config

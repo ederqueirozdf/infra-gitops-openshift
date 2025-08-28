@@ -1,0 +1,27 @@
+apiVersion: velero.io/v1
+kind: Schedule
+metadata:
+  name: backup-completo-12h
+  namespace: openshift-adp
+  annotations:
+    argocd.argoproj.io/sync-wave: "2"   
+spec:
+  schedule: "0 */12 * * *"
+  template:
+    defaultVolumesToRestic: false
+    hooks: {}
+    includedNamespaces:
+      - '*'
+    includedResources:
+      - '*'
+    excludedNamespaces:
+      - openshift-adp
+      - openshift-kube-apiserver
+      - openshift-logging
+      - openshift-monitoring
+    excludedResources:
+      - pvc
+      - pv
+    storageLocation: oadp-backup-1
+    ttl: 720h00m0s
+  useOwnerReferencesInBackup: true
