@@ -8,20 +8,17 @@ spec:
     - clusters:
         selector:
           matchExpressions:
-            - key: cluster.btb/type
+            - key: cluster.flavor/type
               operator: In
               values:
-                - openshift
-                - openshift-baremetal
-                - openshift-hub
-                - openshift-virt     
-            - key: cluster.btb/env
+                - openshift  
+            - key: cluster/env
               operator: In
               values:
                 - prd
                 - dev
                 - hml  
-            - key: gitops.btb/self-provisioner
+            - key: gitops.app/self-provisioner
               operator: In
               values:
                 - enable
@@ -31,9 +28,9 @@ spec:
     spec:
       project: default
       source:
-        repoURL: 'https://bancotoyota@dev.azure.com/bancotoyota/Infraestrutura/_git/Openshift-gitops-infra'
+        repoURL: 'https://github.com/ederqueirozdf/infra-gitops-openshift.git'
         targetRevision: HEAD
-        path: 'components/projects/base'
+        path: '../components/projects/base'
       destination:
         server: '{{server}}'
         namespace: openshift-config

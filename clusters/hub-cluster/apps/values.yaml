@@ -23,6 +23,17 @@ applications:
         selfHeal: true
       syncOptions:
         - CreateNamespace=true
+
+  - name: self-provisioner
+    repoURL: https://github.com/ederqueirozdf/infra-gitops-openshift.git
+    path: clusters/hub-cluster/projects
+    destinationServer: https://kubernetes.default.svc
+    syncPolicy:
+      automated:
+        prune: true
+        selfHeal: true
+      syncOptions:
+        - CreateNamespace=true
         
   # - name: monitoring
   #   repoURL: $REPOSITORY
