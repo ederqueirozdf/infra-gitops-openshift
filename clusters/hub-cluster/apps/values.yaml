@@ -60,14 +60,14 @@ applications:
   #     syncOptions:
   #       - CreateNamespace=true
 
-  # - name: machines
-  #   repoURL: $REPOSITORY
-  #   path: clusters/hub-cluster/machines
-  #   destinationNamespace: openshift-machine-api
-  #   destinationServer: https://kubernetes.default.svc
-  #   syncPolicy:
-  #     automated:
-  #       prune: true
-  #       selfHeal: true
-  #     syncOptions:
-  #       - CreateNamespace=true
+  - name: machines
+    repoURL: https://github.com/ederqueirozdf/infra-gitops-openshift.git
+    path: clusters/hub-cluster/machines
+    destinationNamespace: openshift-machine-api
+    destinationServer: https://kubernetes.default.svc
+    syncPolicy:
+      automated:
+        prune: true
+        selfHeal: true
+      syncOptions:
+        - CreateNamespace=true

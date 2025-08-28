@@ -2,22 +2,22 @@ apiVersion: machine.openshift.io/v1beta1
 kind: MachineSet
 metadata:
   labels:
-    machine.openshift.io/cluster-api-cluster: $CLUSTERID
-  name: $CLUSTERID-infra-logging
+    machine.openshift.io/cluster-api-cluster: equeiroz-zsl2t
+  name: equeiroz-zsl2t-infra-logging
   namespace: openshift-machine-api
 spec:
-  replicas: $MSET_REPLICAS
+  replicas: 1
   selector:
     matchLabels:
-      machine.openshift.io/cluster-api-cluster: $CLUSTERID
-      machine.openshift.io/cluster-api-machineset: $CLUSTERID-infra-logging
+      machine.openshift.io/cluster-api-cluster: equeiroz-zsl2t
+      machine.openshift.io/cluster-api-machineset: equeiroz-zsl2t-infra-logging
   template:
     metadata:
       labels:
-        machine.openshift.io/cluster-api-cluster: $CLUSTERID
+        machine.openshift.io/cluster-api-cluster: equeiroz-zsl2t
         machine.openshift.io/cluster-api-machine-role: infra
         machine.openshift.io/cluster-api-machine-type: infra
-        machine.openshift.io/cluster-api-machineset: $CLUSTERID-infra-logging
+        machine.openshift.io/cluster-api-machineset: equeiroz-zsl2t-infra-logging
     spec:
       metadata:
         labels:
@@ -26,26 +26,29 @@ spec:
       taints:
       - key: node-role.kubernetes.io/infra
         effect: NoSchedule
+      - key: node.type/servico
+        value: logging
+        effect: NoSchedule        
       providerSpec:
         value:
           apiVersion: vsphereprovider.openshift.io/v1beta1
           credentialsSecret:
             name: vsphere-cloud-credentials
-          diskGiB: $MSET_DISK
+          diskGiB: 120
           kind: VSphereMachineProviderSpec
-          memoryMiB: $MSET_MEMORY
+          memoryMiB: 16384
           network:
             devices:
-            - networkName: PRD_OpenShift
-          numCPUs: $MSET_CPUS
-          numCoresPerSocket: $MSET_SOCKETS
+            - networkName: VM Network
+          numCPUs: 4
+          numCoresPerSocket: 2
           snapshot: ""
-          template: $TEMPLATE_NAME
+          template: equeiroz-zsl2t-rhcos-equeiroz
           userDataSecret:
             name: worker-user-data
           workspace:
-            datacenter: $DATACENTER_NAME
-            datastore: $DATACENTER_DATASTORE_PATH
-            folder: $DATACENTER_FOLDER
-            resourcePool: $DATACENTER_RESOURCEPOOL
-            server: $DATACENTER_SERVER
+            datacenter: Datacenter
+            datastore: /Datacenter/datastore/datastore2
+            folder: /Datacenter/vm/Plataformas/Cloud/equeiroz/
+            resourcePool: /Datacenter/host/cluster/Resources
+            server: vcsa.rhbr-lab.com.br
