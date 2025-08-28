@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: ApplicationSet
 metadata:
-  name: oauth-htpass-appset
+  name: appset-oauth
   namespace: openshift-gitops
 spec:
   generators:
@@ -16,7 +16,7 @@ spec:
               values: ["prd", "des", "hml"]    
   template:
     metadata:
-      name: '{{name}}-oauth-htpass'
+      name: '{{name}}-oauth'
     spec:
       project: default
       source:
