@@ -27,6 +27,7 @@ applications:
   - name: self-provisioner
     repoURL: https://github.com/ederqueirozdf/infra-gitops-openshift.git
     path: clusters/hub-cluster/projects
+    destinationNamespace: openshift-config
     destinationServer: https://kubernetes.default.svc
     syncPolicy:
       automated:
