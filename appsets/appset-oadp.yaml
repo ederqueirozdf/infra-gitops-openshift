@@ -29,7 +29,7 @@ spec:
     metadata:
       name: '{{ .name }}-{{ .suffix }}'
     spec:
-      project: appsets
+      project: default
       destination:
         server: '{{ .server }}'
         namespace: openshift-adp
