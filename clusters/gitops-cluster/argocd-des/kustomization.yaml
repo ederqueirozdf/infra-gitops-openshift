@@ -6,5 +6,5 @@ resources:
   # - GitOpsCluster.yaml
   # - ManagedClusterSetBinding.yaml
   # - Placement.yaml
-  - argocd.yaml
-  - namespace.yaml
+  # - argocd.yaml
+  # - namespace.yaml
