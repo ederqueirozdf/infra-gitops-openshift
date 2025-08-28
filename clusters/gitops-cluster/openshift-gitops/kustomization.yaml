@@ -6,3 +6,4 @@ resources:
   - GitOpsCluster.yaml
   - ManagedClusterSetBinding.yaml
   - Placement.yaml
+  - ClusterRoleBinding.yaml
