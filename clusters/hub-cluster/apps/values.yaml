@@ -35,6 +35,18 @@ applications:
         selfHeal: true
       syncOptions:
         - CreateNamespace=true
+
+  - name: image-registry
+    repoURL: https://github.com/ederqueirozdf/infra-gitops-openshift.git
+    path: ../../components/image-registry/overlays/vsphere
+    destinationNamespace: openshift-image-registry
+    destinationServer: https://kubernetes.default.svc
+    syncPolicy:
+      automated:
+        prune: true
+        selfHeal: true
+      syncOptions:
+        - CreateNamespace=true
         
   # - name: monitoring
   #   repoURL: $REPOSITORY
