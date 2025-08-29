@@ -9,3 +9,5 @@ resources:
   - appset-oadp.yaml
 #oauth / authentication
   - appset-oauth.yaml
+#etcd / backup
+  - appset-etcd.yaml  
