@@ -14,14 +14,14 @@ spec:
                   - key: env
                     operator: In
                     values: [des, hml, prd]
-                  - key: backup
+                  - key: appset.enable/backup
                     operator: In
                     values: [oadp-1.0, oadp-1.1, oadp-1.2, stable]
           - list:
               elements:
                 - component: operator
                   suffix: oadp-operator
-                  pathTpl: 'components/oadp/operator/overlays/{{ .metadata.labels.backup }}'
+                  pathTpl: 'components/oadp/operator/overlays/{{ .metadata.labels.appset.enable/backup }}'
                 - component: instance
                   suffix: oadp-instance
                   pathTpl: 'components/oadp/instance/overlays/{{ .metadata.labels.env }}'

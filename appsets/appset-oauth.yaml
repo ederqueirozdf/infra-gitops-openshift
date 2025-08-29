@@ -22,7 +22,7 @@ spec:
       source:
         repoURL: 'https://github.com/ederqueirozdf/infra-gitops-openshift.git'
         targetRevision: HEAD
-        path: '../components/oauth/overlays/{{metadata.labels.oauth}}'
+        path: '../components/oauth/overlays/{{metadata.labels.appset.enable/oauth}}'
       destination:
         server: '{{server}}'
         namespace: openshift-config
