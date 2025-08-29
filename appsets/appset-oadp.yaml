@@ -21,7 +21,7 @@ spec:
               elements:
                 - component: operator
                   suffix: oadp-operator
-                  pathTpl: 'components/oadp/operator/overlays/{{ .metadata.labels.appset.enable/backup }}'
+                  pathTpl: 'components/oadp/operator/overlays/{{ default "stable" (index .metadata.labels "appset.enable/backup") }}'
                 - component: instance
                   suffix: oadp-instance
                   pathTpl: 'components/oadp/instance/overlays/{{ .metadata.labels.env }}'
