@@ -3,4 +3,4 @@
   value: vsphere-csi
 - op: replace
   path: /spec/resources/requests/storage
-  value: 100Gi
+  value: 5Gi
