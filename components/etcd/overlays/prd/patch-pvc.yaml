@@ -3,4 +3,4 @@
   value: thin-csi
 - op: replace
   path: /spec/resources/requests/storage
-  value: 100Gi
+  value: 10Gi
