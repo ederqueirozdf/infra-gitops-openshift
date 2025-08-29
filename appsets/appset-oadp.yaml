@@ -16,12 +16,15 @@ spec:
                     values: [des, hml, prd]
                   - key: appset.enable/backup
                     operator: In
-                    values: [oadp-1.0, oadp-1.1, oadp-1.2, stable]
+                    values: ["true"]
+                  - key: appset/backup
+                    operator: In
+                    values: ["oadp-1.0", "oadp-1.1", "oadp-1.2", "stable"]                    
           - list:
               elements:
                 - component: operator
                   suffix: oadp-operator
-                  pathTpl: 'components/oadp/operator/overlays/{{ default "stable" (index .metadata.labels "appset.enable/backup") }}'
+                  pathTpl: 'components/oadp/operator/overlays/{{ default "stable" (index .metadata.labels "appset/backup") }}'
                 - component: instance
                   suffix: oadp-instance
                   pathTpl: 'components/oadp/instance/overlays/{{ .metadata.labels.env }}'

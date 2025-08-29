@@ -1,0 +1,6 @@
+- op: replace
+  path: /spec/storageClassName
+  value: vsphere-csi
+- op: replace
+  path: /spec/resources/requests/storage
+  value: 100Gi

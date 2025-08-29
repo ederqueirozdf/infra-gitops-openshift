@@ -1,0 +1,49 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: etcd-backup-script
+  namespace: etcd-backup
+  labels:
+    app: etcd-backup
+  annotations:
+    argocd.argoproj.io/sync-wave: "-1"
+data:
+  etcd-backup: |-
+    #!/usr/bin/bash
+    echo " ++++ ARQUIVOS COM MAIS DE 7 DIAS VOLUME ++++ "
+    find "$BACKUP_PATH" -type f -mtime +7
+    echo " ++++ EXCLUINDO ARQUIVOS ++++ "
+    find "$BACKUP_PATH" -type f -mtime +7 -exec rm {} \;
+
+    echo "++++ INICIANDO PROCESSO DE BACKUP PARA  $BACKUP_PATH ++++"
+    cd /tmp
+    mkdir -p "$BACKUP_PATH"
+
+    export DATESTRING=$(date "+%F_%H%M%S")
+    echo "++++ CHROOT: ACESSANDO ESTRUTURA HOST ++++"
+    echo " ++++ ARQUIVOS COM MAIS DE 7 DIAS NO HOST ++++ "
+    chroot /host find /home/core/assets/backup -type f -mtime +7
+    echo " ++++ EXCLUINDO ARQUIVOS ++++ "
+    chroot /host find /home/core/assets/backup -type f -mtime +7 -exec rm {} \;
+
+    chroot /host /usr/local/bin/cluster-backup.sh /home/core/assets/backup
+
+    echo "++++ CRIANDO ESTRUTURA DE DIRETORIOS:  ${BACKUP_PATH}/${DATESTRING} ++++"
+    mkdir -p "${BACKUP_PATH}/${DATESTRING}"
+
+    echo "++++ COPIANDO BACKUP PARA VOLUME ++++"
+    export DATE=$(date "+%F")
+    find /host/home/core/assets/backup/ -type f -name "*$DATE*" -exec cp -rf {} "${BACKUP_PATH}/${DATESTRING}" \;
+
+    if [ $? -eq 0 ]; then
+      echo "Arquivo de backup gerado - ${BACKUP_PATH}/${DATESTRING}."
+      echo " + SUCESSO "
+      echo " + BACKUP CRIADO"
+      ls -lha "${BACKUP_PATH}/${DATESTRING}"
+    else
+      echo "Falha ao criar backup"
+      echo " - FALHOU"
+      exit 1
+    fi
+
+    exit $?

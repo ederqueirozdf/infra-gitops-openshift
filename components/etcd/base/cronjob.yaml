@@ -1,0 +1,73 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: cron-etcd-backup
+  namespace: etcd-backup
+  annotations:
+    argocd.argoproj.io/sync-wave: "0"
+spec:
+  schedule: "54 23 * * *"
+  startingDeadlineSeconds: 200
+  concurrencyPolicy: Forbid
+  failedJobsHistoryLimit: 5
+  successfulJobsHistoryLimit: 5
+  suspend: false
+  jobTemplate:
+    spec:
+      backoffLimit: 0
+      template:
+        spec:
+          serviceAccountName: openshift-backup
+          hostNetwork: true
+          restartPolicy: Never
+          activeDeadlineSeconds: 200
+          nodeSelector:
+            node-role.kubernetes.io/master: ""
+          tolerations:
+            - key: node-role.kubernetes.io/master
+              operator: Exists
+              effect: NoSchedule
+            - key: node.kubernetes.io/not-ready
+              operator: Exists
+              effect: NoExecute
+              tolerationSeconds: 300
+            - key: node.kubernetes.io/unreachable
+              operator: Exists
+              effect: NoExecute
+              tolerationSeconds: 300
+          containers:
+            - name: etcd-backup
+              image: registry.redhat.io/openshift4/ose-cli
+              imagePullPolicy: IfNotPresent
+              command: ["/usr/bin/bash","-c","/tmp/backup-script/etcd-backup"]
+              env:
+                - name: BACKUP_PATH
+                  value: /tmp/etcd_backup
+                - name: BACKUP_SCRIPT
+                  value: /usr/local/bin/cluster-backup.sh
+              resources:
+                requests:
+                  cpu: "300m"
+                  memory: "250Mi"
+              securityContext:
+                privileged: true
+              volumeMounts:
+                - name: etcd-backup-script
+                  mountPath: /tmp/backup-script/
+                  readOnly: true
+                - name: host
+                  mountPath: /host
+                - name: etcd-backup-data
+                  mountPath: /tmp/etcd_backup
+          volumes:
+            - name: etcd-backup-script
+              configMap:
+                name: etcd-backup-script
+                defaultMode: 0777
+            - name: host
+              hostPath:
+                path: /
+                type: Directory
+            - name: etcd-backup-data
+              persistentVolumeClaim:
+                claimName: etcd-backup-pvc

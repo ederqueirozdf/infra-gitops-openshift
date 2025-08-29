@@ -1,35 +1,31 @@
 apiVersion: argoproj.io/v1alpha1
 kind: ApplicationSet
 metadata:
-  name: appset-oauth
+  name: appset-etcd
   namespace: openshift-gitops
 spec:
   generators:
     - clusters:
         selector:
           matchExpressions:
-            - key: appset.enable/oauth
+            - key: appset.enable/etcd-backup
               operator: In
               values: ["true"]
-            - key: appset/oauth
-              operator: In
-              values: ["htpass", "ldap"]              
             - key: env
               operator: In
               values: ["prd", "des", "hml"]    
   template:
     metadata:
-      name: '{{name}}-oauth'
+      name: '{{name}}-etcd'
     spec:
       project: default
       source:
         repoURL: 'https://github.com/ederqueirozdf/infra-gitops-openshift.git'
         targetRevision: HEAD
-        path: '../components/oauth/overlays/{{ default "htpass" (index .metadata.labels "appset/oauth") }}''
-        
+        path: '../components/etcd/overlays/{{metadata.labels.env}}'
       destination:
         server: '{{server}}'
-        namespace: openshift-config
+        namespace: etcd-backup
       syncPolicy:
         automated:
           prune: true
