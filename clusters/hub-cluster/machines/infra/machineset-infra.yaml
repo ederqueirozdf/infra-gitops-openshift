@@ -6,7 +6,7 @@ metadata:
   name: equeiroz-zsl2t-infra
   namespace: openshift-machine-api
 spec:
-  replicas: 1
+  replicas: 0
   selector:
     matchLabels:
       machine.openshift.io/cluster-api-cluster: equeiroz-zsl2t
