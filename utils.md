@@ -1,3 +1,5 @@
+# Default Tolerations Namespace
+
     kind: Namespace
     apiVersion: v1
     metadata:
