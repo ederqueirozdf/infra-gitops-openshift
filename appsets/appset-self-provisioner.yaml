@@ -22,7 +22,7 @@ spec:
       source:
         repoURL: 'https://github.com/ederqueirozdf/infra-gitops-openshift.git'
         targetRevision: HEAD
-        path: '/components/projects/base'
+        path: 'components/projects/base'
       destination:
         server: '{{server}}'
         namespace: openshift-config
