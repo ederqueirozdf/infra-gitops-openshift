@@ -25,7 +25,7 @@ spec:
       source:
         repoURL: 'https://github.com/ederqueirozdf/infra-gitops-openshift.git'
         targetRevision: HEAD
-        path: '../components/oauth/overlays/{{ default "htpass" (index .metadata.labels "appset/oauth") }}''
+        path: ../components/oauth/overlays/{{ default "htpass" (index .metadata.labels "appset/oauth") }}
         
       destination:
         server: '{{server}}'
